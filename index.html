@@ -268,7 +268,7 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   padding: 9rem 0;
   background: var(--white);
 }
-.projecten-grid {
+/* .projecten-grid {
   display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem;
   margin-top: 1rem;
 }
@@ -276,16 +276,78 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   position: relative; overflow: hidden;
   height: 340px; cursor: pointer;
 }
-.project-card:first-child { grid-row: span 2; height: auto; min-height: 500px; }
+.project-card:first-child { grid-row: span 2; height: auto; min-height: 500px; }*/
 .project-bg {
   position: absolute; inset: 0;
   transition: transform .6s cubic-bezier(.25,.46,.45,.94);
 }
+
+/* Masonry grid */
+.projecten-grid {
+  display: block;
+  columns: 2;
+  column-gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Dynamische kaarten */
+.project-card {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+  break-inside: avoid;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+/* Eerste kaart krijgt geen afwijkende afmetingen */
+.project-card:first-child {
+  height: auto;
+  min-height: 0;
+  grid-row: auto;
+}
+
+/* Achtergrond */
+.project-bg {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+/* Afbeelding bepaalt de hoogte */
+.project-bg img {
+  position: relative;
+  z-index: 1;
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+/* Groene achtergrond bij ontbrekende afbeelding */
+.project-bg.no-image {
+  aspect-ratio: 4 / 3;
+}
+
+/* Tekst boven op afbeelding */
+.project-overlay {
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .projecten-grid {
+    columns: 1;
+  }
+}
+
 .project-card:hover .project-bg { transform: scale(1.04); }
-.p1 .project-bg { background: #1B3828; }
-.p2 .project-bg { background: #2D5A3D; }
-.p3 .project-bg { background: #3A4A35; }
-.p4 .project-bg { background: #243D2E; }
+.project-bg {
+  background: var(--green);
+}
 
 .project-pattern {
   position: absolute; inset: 0;
@@ -314,6 +376,8 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.5rem; font-weight: 600; color: var(--white); line-height: 1.2;
 }
+
+
 
 /* ── WERKWIJZE ───────────────────────────────── */
 .werkwijze {
@@ -612,39 +676,40 @@ footer {
       <h2>Recente projecten</h2>
     </div>
     <div class="projecten-grid">
-      <div class="project-card p1">
+      <div class="project-card ">
         <div class="project-bg">
-          <div class="project-pattern"></div>
-          <svg class="project-leaf" width="300" height="460" viewBox="0 0 108 108" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-            <path d="M54,4 C10,18 10,90 54,104 C98,90 98,18 54,4 Z" fill="white" opacity=".08"/>
-          </svg>
+          <div  class="project-pattern"></div>
+          <img src="htstps://picsum.photos/1200/1600" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg + Ontwerp</span>
           <div class="project-name">Moderne stadstuin<br>Amsterdam</div>
         </div>
       </div>
-      <div class="project-card p2">
+      <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
+          <img src="https://picsum.photos/1600/900" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Onderhoud</span>
           <div class="project-name">Landgoed Arnhem</div>
         </div>
       </div>
-      <div class="project-card p3">
+      <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
+          <img src="https://picsum.photos/1200/1200" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg</span>
           <div class="project-name">Tuin met waterpartij<br>Nijmegen</div>
         </div>
       </div>
-      <div class="project-card p4">
+      <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
+          <img src="https://picsum.photos/1200/800" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)" >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Ontwerp + Aanleg</span>
@@ -887,6 +952,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+function imageFallback(img) {
+  const background = img.closest('.project-bg');
+
+  background.classList.add('no-image');
+  img.remove();
+}
 </script>
 </body>
 </html>
