@@ -268,19 +268,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   padding: 9rem 0;
   background: var(--white);
 }
-/* .projecten-grid {
-  display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem;
-  margin-top: 1rem;
-}
-.project-card {
-  position: relative; overflow: hidden;
-  height: 340px; cursor: pointer;
-}
-.project-card:first-child { grid-row: span 2; height: auto; min-height: 500px; }*/
-.project-bg {
-  position: absolute; inset: 0;
-  transition: transform .6s cubic-bezier(.25,.46,.45,.94);
-}
 
 /* Masonry grid */
 .projecten-grid {
@@ -302,20 +289,14 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   vertical-align: top;
 }
 
-/* Eerste kaart krijgt geen afwijkende afmetingen */
-.project-card:first-child {
-  height: auto;
-  min-height: 0;
-  grid-row: auto;
-}
-
 /* Achtergrond */
 .project-bg {
   position: relative;
-  inset: auto;
   width: 100%;
   height: auto;
   overflow: hidden;
+  background: var(--green);
+  transition: transform .6s cubic-bezier(.25,.46,.45,.94);
 }
 
 /* Afbeelding bepaalt de hoogte */
@@ -323,7 +304,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   position: relative;
   z-index: 1;
   display: block;
-
   width: 100%;
   height: auto;
 }
@@ -345,9 +325,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
 }
 
 .project-card:hover .project-bg { transform: scale(1.04); }
-.project-bg {
-  background: var(--green);
-}
 
 .project-pattern {
   position: absolute; inset: 0;
@@ -376,8 +353,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.5rem; font-weight: 600; color: var(--white); line-height: 1.2;
 }
-
-
 
 /* ── WERKWIJZE ───────────────────────────────── */
 .werkwijze {
@@ -512,8 +487,6 @@ footer {
 @media (max-width: 900px) {
   .wie-grid, .contact-grid { grid-template-columns: 1fr; }
   .diensten-grid { grid-template-columns: 1fr; }
-  .projecten-grid { grid-template-columns: 1fr; }
-  .project-card:first-child { grid-row: auto; min-height: 300px; }
   .stappen { grid-template-columns: repeat(2,1fr); }
   .stappen::before { display: none; }
   .footer-top { grid-template-columns: 1fr 1fr; }
@@ -679,7 +652,7 @@ footer {
       <div class="project-card ">
         <div class="project-bg">
           <div  class="project-pattern"></div>
-          <img src="htstps://picsum.photos/1200/1600" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
+          <img src="https://picsum.photos/1200/1600"  loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg + Ontwerp</span>
@@ -689,7 +662,7 @@ footer {
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src="https://picsum.photos/1600/900" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
+          <img src="https://picsum.photos/1600/900"  loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Onderhoud</span>
@@ -699,7 +672,7 @@ footer {
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src="https://picsum.photos/1200/1200" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)">
+          <img src="https://picsum.photos/1200/1200" loading="lazy" onerror="imageFallback(this)">
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg</span>
@@ -709,7 +682,7 @@ footer {
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src="https://picsum.photos/1200/800" alt="Girl in a jacket" loading="lazy" onerror="imageFallback(this)" >
+          <img src="https://picsum.photos/1200/800"  loading="lazy" onerror="imageFallback(this)" >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Ontwerp + Aanleg</span>
