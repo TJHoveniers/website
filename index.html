@@ -164,18 +164,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
 }
 .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
-.hero-scroll {
-  position: absolute; bottom: 2.5rem; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: .5rem;
-  color: rgba(255,255,255,.4); font-size: .6rem; letter-spacing: 3px; text-transform: uppercase;
-}
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
-  animation: scrollpulse 2s ease-in-out infinite;
-}
-@keyframes scrollpulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 
 /* ── WIE ZIJN WIJ ────────────────────────────── */
 .wie {
@@ -257,11 +245,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
 }
 .dienst-card h3 { margin-bottom: 1rem; }
 .dienst-card p { margin-bottom: 1.5rem; }
-.dienst-link {
-  font-size: .65rem; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--gold); font-weight: 500; text-decoration: none;
-  border-bottom: 1px solid var(--gold); padding-bottom: 1px;
-}
 
 /* ── PROJECTEN ───────────────────────────────── */
 .projecten {
@@ -313,11 +296,6 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
   aspect-ratio: 4 / 3;
 }
 
-/* Tekst boven op afbeelding */
-.project-overlay {
-  z-index: 2;
-}
-
 @media (max-width: 900px) {
   .projecten-grid {
     columns: 1;
@@ -333,17 +311,13 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-.project-leaf {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  opacity: .08;
-}
+
 .project-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 60%);
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 2rem;
+  z-index: 2;
 }
 .project-tag {
   font-size: .6rem; letter-spacing: 3px; text-transform: uppercase;
@@ -352,6 +326,97 @@ nav.scrolled .nav-links a { color: var(--text-mid); }
 .project-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.5rem; font-weight: 600; color: var(--white); line-height: 1.2;
+}
+
+/* ── PROJECTCARROUSELS ── */
+.project-card.has-carousel .project-bg {
+  aspect-ratio: 16 / 9; /* JS vervangt dit met de verhouding van de eerste foto */
+}
+
+.project-card.has-carousel .project-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Foto blijft volledig zichtbaar, zonder uitrekken of bijsnijden */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s ease;
+  pointer-events: none;
+}
+
+.project-card.has-carousel .project-bg img.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.project-card.has-carousel .project-overlay {
+  pointer-events: none; /* De afbeelding blijft swipebaar */
+}
+
+.project-card.has-carousel .project-bg.no-image {
+  aspect-ratio: 4 / 3;
+}
+
+.project-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,.38);
+  background: rgba(27,56,40,.78);
+  color: var(--white);
+  font: 1.4rem/1 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+
+.project-arrow:hover,
+.project-arrow:focus-visible {
+  background: var(--green);
+  border-color: var(--gold-light);
+}
+
+.project-prev { left: .75rem; }
+.project-next { right: .75rem; }
+
+.project-counter {
+  position: absolute;
+  z-index: 3;
+  top: .75rem;
+  right: .75rem;
+  padding: .4rem .6rem;
+  background: rgba(27,56,40,.78);
+  color: var(--white);
+  font-size: .7rem;
+  letter-spacing: 1px;
+}
+
+/* Op smalle schermen staan de pijltjes bovenaan, uit de projecttitel. */
+@media (max-width: 600px) {
+  .project-arrow {
+    top: .75rem;
+    transform: none;
+  }
+  .project-counter {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+.project-arrow[hidden],
+.project-counter[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card.has-carousel .project-bg img {
+    transition: none;
+  }
 }
 
 /* ── WERKWIJZE ───────────────────────────────── */
@@ -642,10 +707,11 @@ footer {
       <h2>Recente projecten</h2>
     </div>
     <div class="projecten-grid">
-      <!-- <div class="project-card ">
+      <div class="project-card ">
         <div class="project-bg">
           <div  class="project-pattern"></div>
-          <img src=""  loading="lazy" onerror="imageFallback(this)">
+          <img src="test-images/image-143.jpg"  loading="lazy" >
+          <img src="test-images/image-25.jpg"  loading="lazy" >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg + Ontwerp</span>
@@ -655,33 +721,36 @@ footer {
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src=""  loading="lazy" onerror="imageFallback(this)">
+          <img src="test-images/image-120.jpg"  loading="lazy" >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Onderhoud</span>
           <div class="project-name">Landgoed Arnhem</div>
         </div>
-      </div>
+      </div> 
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src="" loading="lazy" onerror="imageFallback(this)">
+          <img src="test-images/image-1082.jpg" loading="lazy" >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Aanleg</span>
           <div class="project-name">Tuin met waterpartij<br>Nijmegen</div>
         </div>
-      </div>
+      </div> 
       <div class="project-card ">
         <div class="project-bg">
           <div class="project-pattern"></div>
-          <img src=""  loading="lazy" onerror="imageFallback(this)" >
+          <img src="test-images/image-1074.jpg"  loading="lazy"  >
+          <img src="test-images/image-174.jpg"  loading="lazy"  >
+          <img src="test-images/image-1704.jpg"  loading="lazy"  >
+          <img src="test-images/image-17.jpg"  loading="lazy"  >
         </div>
         <div class="project-overlay">
           <span class="project-tag">Ontwerp + Aanleg</span>
           <div class="project-name">Bedrijfstuin Gelderland</div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </section>
@@ -839,7 +908,7 @@ footer {
         <ul>
           <li><a href="tel:+31623520639">06 23 52 06 39</a></li>
           <li><a href="mailto:info@tjhoveniers.nl">info@tjhoveniers.nl</a></li>
-          <li><a href="#">Provincie Gelderland</a></li>
+          <li><a>Provincie Gelderland</a></li>
         </ul>
       </div>
     </div>
@@ -927,12 +996,132 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-function imageFallback(img) {
-  const background = img.closest('.project-bg');
+// ── PROJECTCARROUSELS ──────────────────────────
+// Elke projectkaart werkt zelfstandig; voeg alleen extra <img>-elementen toe.
+document.querySelectorAll('.project-card').forEach(card => {
+  const frame = card.querySelector('.project-bg');
+  if (!frame) return;
 
-  background.classList.add('no-image');
-  img.remove();
-}
+  let slides = Array.from(frame.querySelectorAll('img'));
+  if (slides.length < 2) {
+    const img = slides[0];
+
+    if (!img) {
+      frame.classList.add('no-image');
+      return;
+    }
+
+    const failed = () => {
+      img.remove();
+      frame.classList.add('no-image');
+    };
+
+    img.addEventListener('error', failed, { once: true });
+
+    if (img.complete && !img.naturalWidth) {
+      failed();
+    }
+    return;
+  }
+
+  card.classList.add('has-carousel');
+  frame.style.touchAction = 'pan-y'; // Verticaal scrollen op mobiel blijft mogelijk.
+
+  const previous = document.createElement('button');
+  previous.type = 'button';
+  previous.className = 'project-arrow project-prev';
+  previous.setAttribute('aria-label', 'Vorige foto');
+  previous.textContent = '‹';
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'project-arrow project-next';
+  next.setAttribute('aria-label', 'Volgende foto');
+  next.textContent = '›';
+
+  const counter = document.createElement('span');
+  counter.className = 'project-counter';
+  counter.setAttribute('aria-live', 'polite');
+
+  card.append(previous, next, counter);
+  let activeIndex = 0;
+
+  function updateRatio(img) {
+    if (!img) {
+      frame.style.removeProperty('aspect-ratio');
+      return;
+    }
+    const width = img.naturalWidth || Number(img.getAttribute('width'));
+    const height = img.naturalHeight || Number(img.getAttribute('height'));
+    if (width > 0 && height > 0) {
+      frame.style.aspectRatio = `${width} / ${height}`;
+    }
+  }
+
+  function showSlide(index) {
+    if (!slides.length) {
+      frame.classList.add('no-image'); // Oorspronkelijke groene fallback
+      frame.style.removeProperty('aspect-ratio');
+      previous.hidden = next.hidden = counter.hidden = true;
+      return;
+    }
+
+    activeIndex = (index + slides.length) % slides.length;
+    slides.forEach((img, i) => {
+      const active = i === activeIndex;
+      img.classList.toggle('is-active', active);
+      img.setAttribute('aria-hidden', String(!active));
+    });
+
+    const multiple = slides.length > 1;
+    previous.hidden = next.hidden = counter.hidden = !multiple;
+    counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+  }
+
+  for (const img of [...slides]) {
+
+    const failed = () => {
+      const index = slides.indexOf(img);
+      if (index === -1) return;
+      slides.splice(index, 1);
+      img.remove();
+      if (index < activeIndex) activeIndex--;
+      if (activeIndex >= slides.length) activeIndex = 0;
+      if (index === 0) updateRatio(slides[0]);
+      showSlide(activeIndex);
+    };
+
+    img.addEventListener('error', failed);
+    if (img.complete && !img.naturalWidth) failed();
+    img.addEventListener('load', () => {
+      if (img === slides[0]) updateRatio(img);
+    });
+  }
+
+  updateRatio(slides[0]);
+  previous.addEventListener('click', () => showSlide(activeIndex - 1));
+  next.addEventListener('click', () => showSlide(activeIndex + 1));
+
+  // Optioneel horizontaal swipen zonder verticaal scrollen te blokkeren.
+  let startX = null;
+  let startY = null;
+  frame.addEventListener('touchstart', event => {
+    startX = event.changedTouches[0].clientX;
+    startY = event.changedTouches[0].clientY;
+  }, { passive: true });
+
+  frame.addEventListener('touchend', event => {
+    if (startX === null || slides.length < 2) return;
+    const dx = event.changedTouches[0].clientX - startX;
+    const dy = event.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      showSlide(activeIndex + (dx < 0 ? 1 : -1));
+    }
+    startX = startY = null;
+  }, { passive: true });
+
+  showSlide(0);
+});
 </script>
 </body>
 </html>
